@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
 import { TableHead, CircularProgress } from "@material-ui/core";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import humanizeDuration from "humanize-duration";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -174,6 +175,10 @@ const VMMessages = () => {
                 ).formatInternational()
               : message["caller_id_number"].includes("anonymous") &&
                 "Anonymous";
+            const duration = humanizeDuration(message.length, {
+              units: ["h", "m", "s"],
+              round: true,
+            });
 
             return (
               <TableRow key={message["media_id"]}>
@@ -181,7 +186,7 @@ const VMMessages = () => {
                   {from}
                 </TableCell>
                 <TableCell align="right">{to}</TableCell>
-                <TableCell align="right">{message.length}</TableCell>
+                <TableCell align="right">{duration}</TableCell>
                 <TableCell align="right">{folder}</TableCell>
               </TableRow>
             );
