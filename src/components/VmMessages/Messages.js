@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -14,11 +14,8 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
-import axiosClient from "../../config/axiosClient";
-import {
-  REACT_APP_ACCOUNT_ID,
-  REACT_APP_VM_BOX_ID,
-} from "../../utils/constants";
+import { useDispatch } from "react-redux";
+import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -122,6 +119,12 @@ const useStyles2 = makeStyles({
 });
 
 const VMMessages = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getVmMessages = () => dispatch(getVmMessagesAction());
+    getVmMessages();
+  }, [dispatch]);
+
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -137,18 +140,6 @@ const VMMessages = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const fetchData = () => {
-    return axiosClient
-      .get(
-        `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${REACT_APP_VM_BOX_ID}/messages`
-      )
-      .then((response) => {
-        console.log(response.data.data);
-      })
-      .catch((error) => console.log(error));
-  };
-  fetchData();
 
   return (
     <TableContainer component={Paper}>
