@@ -10,7 +10,7 @@ import {
 // Default State
 const vmMessagesDefaultState = {
   messages: [],
-  loading: true,
+  isLoading: true,
   error: null,
   isProcessing: false,
 };
@@ -20,19 +20,19 @@ export default (state = vmMessagesDefaultState, action) => {
     case GET_VM_MESSAGES_START:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
       };
     case GET_VM_MESSAGES_SUCCESS:
       return {
         ...state,
         messages: action.messages,
-        loading: false,
+        isLoading: false,
         error: false,
       };
     case GET_VM_MESSAGES_ERROR:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         error: true,
       };
     case START_VM_MESSAGE_UPDATE:

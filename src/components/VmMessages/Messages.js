@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -128,8 +128,10 @@ const folderStates = () =>
     </MenuItem>
   ));
 
+// Table Component
 const VMMessages = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const getVmMessages = () => dispatch(getVmMessagesAction());
     getVmMessages();
@@ -140,7 +142,8 @@ const VMMessages = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const vmMessages = useSelector((state) => state.vmMessages.messages);
-  const isLoading = useSelector((state) => state.vmMessages.loading);
+  const isLoading = useSelector((state) => state.vmMessages.isLoading);
+  const isProcessing = useSelector((state) => state.vmMessages.isProcessing);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, vmMessages.length - page * rowsPerPage);
@@ -154,6 +157,13 @@ const VMMessages = () => {
     setPage(0);
   };
 
+  // For update process
+  const [folder, setFolder] = useState("");
+
+  const handleChange = (e) => {
+    setFolder(e.target.value);
+  };
+
   return (
     <TableContainer component={Paper} style={{ padding: "2rem" }}>
       <Table className={classes.table} aria-label="custom pagination table">
@@ -162,7 +172,9 @@ const VMMessages = () => {
             <TableCell>From</TableCell>
             <TableCell align="right">To</TableCell>
             <TableCell align="right">Duration</TableCell>
-            <TableCell align="right">Status</TableCell>
+            <TableCell padding="checkbox" align="center">
+              Status
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -184,9 +196,6 @@ const VMMessages = () => {
               )
             : vmMessages
           ).map((message) => {
-            // Capitalizing first letter on 'Status' field
-            const folder =
-              message.folder.charAt(0).toUpperCase() + message.folder.slice(1);
             const from = message.from.includes("anonymous")
               ? "Anonymous"
               : message["caller_id_name"].includes("+")
@@ -218,8 +227,9 @@ const VMMessages = () => {
                       variant="outlined"
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      // value={age}
-                      // onChange={handleChange}
+                      defaultValue={message.folder}
+                      style={{ textAlign: "center" }}
+                      onChange={handleChange}
                     >
                       {folderStates()}
                     </Select>
