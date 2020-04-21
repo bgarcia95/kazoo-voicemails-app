@@ -160,16 +160,24 @@ const VMMessages = () => {
           ).map((message) => {
             const folder =
               message.folder.charAt(0).toUpperCase() + message.folder.slice(1);
+            const from = message.from.includes("anonymous")
+              ? "Anonymous"
+              : message["caller_id_name"].includes("+")
+              ? parsePhoneNumberFromString(
+                  message["caller_id_name"].split("@")[0]
+                ).formatInternational()
+              : message["caller_id_name"];
             const to = message.to.includes("+")
               ? parsePhoneNumberFromString(
                   message.to.split("@")[0]
                 ).formatInternational()
-              : message["caller_id_number"] === "anonymous" && "Anonymous";
+              : message["caller_id_number"].includes("anonymous") &&
+                "Anonymous";
 
             return (
               <TableRow key={message["media_id"]}>
                 <TableCell component="th" scope="row">
-                  {message.from}
+                  {from}
                 </TableCell>
                 <TableCell align="right">{to}</TableCell>
                 <TableCell align="right">{message.length}</TableCell>
