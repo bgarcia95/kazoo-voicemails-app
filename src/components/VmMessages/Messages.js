@@ -234,7 +234,7 @@ const VMMessages = () => {
                       variant="outlined"
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      defaultValue={message.folder}
+                      value={message.folder}
                       style={{ textAlign: "center" }}
                       onChange={(e) => {
                         handleChange(e);

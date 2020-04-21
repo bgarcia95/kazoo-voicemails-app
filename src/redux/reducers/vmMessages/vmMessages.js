@@ -20,7 +20,6 @@ export default (state = vmMessagesDefaultState, action) => {
     case GET_VM_MESSAGES_START:
       return {
         ...state,
-        isLoading: true,
       };
     case GET_VM_MESSAGES_SUCCESS:
       return {
