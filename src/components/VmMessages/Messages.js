@@ -16,7 +16,13 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { useDispatch, useSelector } from "react-redux";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
-import { TableHead, CircularProgress } from "@material-ui/core";
+import {
+  TableHead,
+  CircularProgress,
+  MenuItem,
+  Select,
+  FormControl,
+} from "@material-ui/core";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import humanizeDuration from "humanize-duration";
 
@@ -27,7 +33,7 @@ const useStyles1 = makeStyles((theme) => ({
   },
 }));
 
-function TablePaginationActions(props) {
+const TablePaginationActions = (props) => {
   const classes = useStyles1();
   const theme = useTheme();
   const { count, page, rowsPerPage, onChangePage } = props;
@@ -88,7 +94,7 @@ function TablePaginationActions(props) {
       </IconButton>
     </div>
   );
-}
+};
 
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
@@ -97,11 +103,30 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-const useStyles2 = makeStyles({
+const useStyles2 = makeStyles((theme) => ({
   table: {
     minWidth: 500,
   },
-});
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
+
+//  Folder types for select
+
+const folderTypes = [
+  { value: "new", label: "New" },
+  { value: "saved", label: "Saved" },
+  { value: "deleted", label: "Deleted" },
+];
+
+const folderStates = () =>
+  folderTypes.map((el) => (
+    <MenuItem key={`id-${el.value}`} value={el.value}>
+      {el.label}
+    </MenuItem>
+  ));
 
 const VMMessages = () => {
   const dispatch = useDispatch();
@@ -187,7 +212,19 @@ const VMMessages = () => {
                 </TableCell>
                 <TableCell align="right">{to}</TableCell>
                 <TableCell align="right">{duration}</TableCell>
-                <TableCell align="right">{folder}</TableCell>
+                <TableCell align="right">
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      variant="outlined"
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      // value={age}
+                      // onChange={handleChange}
+                    >
+                      {folderStates()}
+                    </Select>
+                  </FormControl>
+                </TableCell>
               </TableRow>
             );
           })}
