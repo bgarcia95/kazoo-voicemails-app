@@ -16,7 +16,7 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { useDispatch, useSelector } from "react-redux";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
-import { TableHead } from "@material-ui/core";
+import { TableHead, CircularProgress } from "@material-ui/core";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -113,6 +113,7 @@ const VMMessages = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const vmMessages = useSelector((state) => state.vmMessages.messages);
+  const isLoading = useSelector((state) => state.vmMessages.loading);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, vmMessages.length - page * rowsPerPage);
@@ -127,7 +128,7 @@ const VMMessages = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} style={{ padding: "2rem" }}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
@@ -138,20 +139,31 @@ const VMMessages = () => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {isLoading && (
+            <TableRow>
+              <TableCell
+                colSpan={5}
+                rowSpan={vmMessages.length}
+                style={{ textAlign: "center" }}
+              >
+                <CircularProgress />
+              </TableCell>
+            </TableRow>
+          )}
           {(rowsPerPage > 0
             ? vmMessages.slice(
                 page * rowsPerPage,
                 page * rowsPerPage + rowsPerPage
               )
             : vmMessages
-          ).map((row) => (
-            <TableRow key={row.name}>
+          ).map((message) => (
+            <TableRow key={message["media_id"]}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {message.from}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{message.to}</TableCell>
+              <TableCell align="right">{message.length}</TableCell>
+              <TableCell align="right">{message.folder}</TableCell>
             </TableRow>
           ))}
 
