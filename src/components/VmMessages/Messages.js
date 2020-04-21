@@ -16,6 +16,7 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { useDispatch } from "react-redux";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
+import { TableHead } from "@material-ui/core";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -144,6 +145,14 @@ const VMMessages = () => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
+        <TableHead>
+          <TableRow>
+            <TableCell>From</TableCell>
+            <TableCell align="right">To</TableCell>
+            <TableCell align="right">Duration</TableCell>
+            <TableCell align="right">Status</TableCell>
+          </TableRow>
+        </TableHead>
         <TableBody>
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -154,6 +163,7 @@ const VMMessages = () => {
                 {row.name}
               </TableCell>
               <TableCell align="right">{row.calories}</TableCell>
+              <TableCell align="right">{row.fat}</TableCell>
               <TableCell align="right">{row.fat}</TableCell>
             </TableRow>
           ))}

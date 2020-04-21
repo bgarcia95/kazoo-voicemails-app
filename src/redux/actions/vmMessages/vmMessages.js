@@ -26,7 +26,7 @@ export const getVmMessagesError = () => ({
 
 export const getVmMessagesAction = () => {
   return (dispatch) => {
-    dispatch(getVmMessagesStart);
+    dispatch(getVmMessagesStart());
 
     // Fetch data from API
     axiosClient
