@@ -1,1 +1,7 @@
-export const { SERVER_URL, CREDENTIALS, ACCOUNT_ID, VM_BOX_ID } = process.env;
+export const {
+  REACT_APP_SERVER_URL,
+  REACT_APP_CREDENTIALS,
+  REACT_APP_ACCOUNT_ID,
+  REACT_APP_VM_BOX_ID,
+  REACT_APP_PROXY_URL,
+} = process.env;

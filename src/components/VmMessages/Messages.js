@@ -14,6 +14,11 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import axiosClient from "../../config/axiosClient";
+import {
+  REACT_APP_ACCOUNT_ID,
+  REACT_APP_VM_BOX_ID,
+} from "../../utils/constants";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -92,9 +97,7 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
-  return { name, calories, fat };
-}
+const createData = (name, calories, fat) => ({ name, calories, fat });
 
 const rows = [
   createData("Cupcake", 305, 3.7),
@@ -134,6 +137,18 @@ const VMMessages = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const fetchData = () => {
+    return axiosClient
+      .get(
+        `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${REACT_APP_VM_BOX_ID}/messages`
+      )
+      .then((response) => {
+        console.log(response.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+  fetchData();
 
   return (
     <TableContainer component={Paper}>
