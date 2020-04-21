@@ -17,6 +17,7 @@ import LastPageIcon from "@material-ui/icons/LastPage";
 import { useDispatch, useSelector } from "react-redux";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
 import { TableHead, CircularProgress } from "@material-ui/core";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -159,12 +160,18 @@ const VMMessages = () => {
           ).map((message) => {
             const folder =
               message.folder.charAt(0).toUpperCase() + message.folder.slice(1);
+            const to = message.to.includes("+")
+              ? parsePhoneNumberFromString(
+                  message.to.split("@")[0]
+                ).formatInternational()
+              : message["caller_id_number"] === "anonymous" && "Anonymous";
+
             return (
               <TableRow key={message["media_id"]}>
                 <TableCell component="th" scope="row">
                   {message.from}
                 </TableCell>
-                <TableCell align="right">{message.to}</TableCell>
+                <TableCell align="right">{to}</TableCell>
                 <TableCell align="right">{message.length}</TableCell>
                 <TableCell align="right">{folder}</TableCell>
               </TableRow>
