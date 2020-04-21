@@ -156,16 +156,20 @@ const VMMessages = () => {
                 page * rowsPerPage + rowsPerPage
               )
             : vmMessages
-          ).map((message) => (
-            <TableRow key={message["media_id"]}>
-              <TableCell component="th" scope="row">
-                {message.from}
-              </TableCell>
-              <TableCell align="right">{message.to}</TableCell>
-              <TableCell align="right">{message.length}</TableCell>
-              <TableCell align="right">{message.folder}</TableCell>
-            </TableRow>
-          ))}
+          ).map((message) => {
+            const folder =
+              message.folder.charAt(0).toUpperCase() + message.folder.slice(1);
+            return (
+              <TableRow key={message["media_id"]}>
+                <TableCell component="th" scope="row">
+                  {message.from}
+                </TableCell>
+                <TableCell align="right">{message.to}</TableCell>
+                <TableCell align="right">{message.length}</TableCell>
+                <TableCell align="right">{folder}</TableCell>
+              </TableRow>
+            );
+          })}
 
           {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
