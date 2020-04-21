@@ -158,6 +158,7 @@ const VMMessages = () => {
               )
             : vmMessages
           ).map((message) => {
+            // Capitalizing first letter on 'Status' field
             const folder =
               message.folder.charAt(0).toUpperCase() + message.folder.slice(1);
             const from = message.from.includes("anonymous")
