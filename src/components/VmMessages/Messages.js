@@ -15,7 +15,10 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import { useDispatch, useSelector } from "react-redux";
-import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
+import {
+  getVmMessagesAction,
+  updateVmMessageAction,
+} from "../../redux/actions/vmMessages/vmMessages";
 import {
   TableHead,
   CircularProgress,
@@ -164,6 +167,10 @@ const VMMessages = () => {
     setFolder(e.target.value);
   };
 
+  const onChange = (messageID, messageFolder) => {
+    dispatch(updateVmMessageAction(messageID, { folder: messageFolder }));
+  };
+
   return (
     <TableContainer component={Paper} style={{ padding: "2rem" }}>
       <Table className={classes.table} aria-label="custom pagination table">
@@ -229,7 +236,10 @@ const VMMessages = () => {
                       id="demo-simple-select-outlined"
                       defaultValue={message.folder}
                       style={{ textAlign: "center" }}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        handleChange(e);
+                        onChange(message["media_id"], e.target.value);
+                      }}
                     >
                       {folderStates()}
                     </Select>
