@@ -33,7 +33,13 @@ export const getVmMessagesAction = () => {
       .get(
         `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${REACT_APP_VM_BOX_ID}/messages`
       )
-      .then((response) => console.log(response.data))
-      .catch((error) => console.log(error));
+      .then((response) => {
+        // console.log(response.data);
+        dispatch(getVmMessagesSuccess(response.data.data));
+      })
+      .catch((error) => {
+        // console.log(error);
+        dispatch(getVmMessagesError());
+      });
   };
 };
