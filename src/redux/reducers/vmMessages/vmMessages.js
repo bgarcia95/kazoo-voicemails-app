@@ -5,10 +5,9 @@ const vmMessagesDefaultState = {
   error: null,
 };
 
-export default (state = vmMessagesDefaultState, action) {
-    switch (action.type) {
-        default:
-            return state;
-            
-    }
-}
+export default (state = vmMessagesDefaultState, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};
