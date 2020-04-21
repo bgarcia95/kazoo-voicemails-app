@@ -6,7 +6,7 @@ import {
 
 // Default State
 const vmMessagesDefaultState = {
-  vmMessages: [],
+  messages: [],
   loading: true,
   error: null,
 };
@@ -21,7 +21,7 @@ export default (state = vmMessagesDefaultState, action) => {
     case GET_VM_MESSAGES_SUCCESS:
       return {
         ...state,
-        vmMessages: action.messages,
+        messages: action.messages,
         loading: false,
         error: false,
       };
