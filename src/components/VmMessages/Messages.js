@@ -25,6 +25,7 @@ import {
   MenuItem,
   Select,
   FormControl,
+  Backdrop,
 } from "@material-ui/core";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import humanizeDuration from "humanize-duration";
@@ -114,6 +115,10 @@ const useStyles2 = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "blue",
+  },
 }));
 
 //  Folder types for select
@@ -172,109 +177,116 @@ const VMMessages = () => {
   };
 
   return (
-    <TableContainer component={Paper} style={{ padding: "2rem" }}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <TableHead>
-          <TableRow>
-            <TableCell>From</TableCell>
-            <TableCell align="right">To</TableCell>
-            <TableCell align="right">Duration</TableCell>
-            <TableCell padding="checkbox" align="center">
-              Status
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {isLoading && (
+    <div>
+      {isProcessing && (
+        <Backdrop id="myBackdrop" className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
+      <TableContainer component={Paper} style={{ padding: "2rem" }}>
+        <Table className={classes.table} aria-label="custom pagination table">
+          <TableHead>
             <TableRow>
-              <TableCell
-                colSpan={5}
-                rowSpan={vmMessages.length}
-                style={{ textAlign: "center" }}
-              >
-                <CircularProgress />
+              <TableCell>From</TableCell>
+              <TableCell align="right">To</TableCell>
+              <TableCell align="right">Duration</TableCell>
+              <TableCell padding="checkbox" align="center">
+                Status
               </TableCell>
             </TableRow>
-          )}
-          {(rowsPerPage > 0
-            ? vmMessages.slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-              )
-            : vmMessages
-          ).map((message) => {
-            const from = message.from.includes("anonymous")
-              ? "Anonymous"
-              : message["caller_id_name"].includes("+")
-              ? parsePhoneNumberFromString(
-                  message["caller_id_name"].split("@")[0]
-                ).formatInternational()
-              : message["caller_id_name"];
-            const to = message.to.includes("+")
-              ? parsePhoneNumberFromString(
-                  message.to.split("@")[0]
-                ).formatInternational()
-              : message["caller_id_number"].includes("anonymous") &&
-                "Anonymous";
-            const duration = humanizeDuration(message.length, {
-              units: ["h", "m", "s"],
-              round: true,
-            });
-
-            return (
-              <TableRow key={message["media_id"]}>
-                <TableCell component="th" scope="row">
-                  {from}
-                </TableCell>
-                <TableCell align="right">{to}</TableCell>
-                <TableCell align="right">{duration}</TableCell>
-                <TableCell align="right">
-                  <FormControl className={classes.formControl}>
-                    <Select
-                      variant="outlined"
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={message.folder}
-                      style={{ textAlign: "center" }}
-                      onChange={(e) => {
-                        handleChange(e);
-                        onChange(message["media_id"], e.target.value);
-                      }}
-                    >
-                      {folderStates()}
-                    </Select>
-                  </FormControl>
+          </TableHead>
+          <TableBody>
+            {isLoading && (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  rowSpan={vmMessages.length}
+                  style={{ textAlign: "center" }}
+                >
+                  <CircularProgress />
                 </TableCell>
               </TableRow>
-            );
-          })}
+            )}
+            {(rowsPerPage > 0
+              ? vmMessages.slice(
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
+              : vmMessages
+            ).map((message) => {
+              const from = message.from.includes("anonymous")
+                ? "Anonymous"
+                : message["caller_id_name"].includes("+")
+                ? parsePhoneNumberFromString(
+                    message["caller_id_name"].split("@")[0]
+                  ).formatInternational()
+                : message["caller_id_name"];
+              const to = message.to.includes("+")
+                ? parsePhoneNumberFromString(
+                    message.to.split("@")[0]
+                  ).formatInternational()
+                : message["caller_id_number"].includes("anonymous") &&
+                  "Anonymous";
+              const duration = humanizeDuration(message.length, {
+                units: ["h", "m", "s"],
+                round: true,
+              });
 
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+              return (
+                <TableRow key={message["media_id"]}>
+                  <TableCell component="th" scope="row">
+                    {from}
+                  </TableCell>
+                  <TableCell align="right">{to}</TableCell>
+                  <TableCell align="right">{duration}</TableCell>
+                  <TableCell align="right">
+                    <FormControl className={classes.formControl}>
+                      <Select
+                        variant="outlined"
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={message.folder}
+                        style={{ textAlign: "center" }}
+                        onChange={(e) => {
+                          handleChange(e);
+                          onChange(message["media_id"], e.target.value);
+                        }}
+                      >
+                        {folderStates()}
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+                colSpan={3}
+                count={vmMessages.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: { "aria-label": "rows per page" },
+                  native: true,
+                }}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-              colSpan={3}
-              count={vmMessages.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: { "aria-label": "rows per page" },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 export default VMMessages;
