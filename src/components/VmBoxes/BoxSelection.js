@@ -8,7 +8,7 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getVmBoxesAction } from "../../redux/actions/vmBoxes/vmBoxes";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,10 +20,23 @@ const useStyles = makeStyles((theme) => ({
 
 const BoxSelection = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const getVmBoxes = () => dispatch(getVmBoxesAction());
     getVmBoxes();
   }, [dispatch]);
+
+  const vmBoxes = useSelector((state) => state.vmBoxes.boxes);
+
+  const vmBoxesArray = vmBoxes.map((box) => {
+    return {
+      id: box.id,
+      name: box.name,
+    };
+  });
+
+  const populateSelect = () =>
+    vmBoxesArray.map((box) => <MenuItem key={box.id}>{box.name}</MenuItem>);
 
   const classes = useStyles();
   return (
@@ -46,7 +59,7 @@ const BoxSelection = () => {
             // onChange={handleChangeBox}
             style={{ textAlign: "center" }}
           >
-            {/* {boxesItems()} */}
+            {populateSelect()}
             <MenuItem>Test</MenuItem>
           </Select>
         </FormControl>
