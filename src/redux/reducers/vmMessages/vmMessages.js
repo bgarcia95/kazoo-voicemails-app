@@ -13,6 +13,7 @@ const vmMessagesDefaultState = {
   isLoading: true,
   error: null,
   isProcessing: false,
+  isFetching: false,
 };
 
 export default (state = vmMessagesDefaultState, action) => {
@@ -20,6 +21,7 @@ export default (state = vmMessagesDefaultState, action) => {
     case GET_VM_MESSAGES_START:
       return {
         ...state,
+        isFetching: true,
       };
     case GET_VM_MESSAGES_SUCCESS:
       return {
@@ -27,6 +29,7 @@ export default (state = vmMessagesDefaultState, action) => {
         messages: action.messages,
         isLoading: false,
         error: false,
+        isFetching: false,
       };
     case GET_VM_MESSAGES_ERROR:
       return {
@@ -39,6 +42,7 @@ export default (state = vmMessagesDefaultState, action) => {
         ...state,
         isProcessing: true,
         error: null,
+        isFetching: false,
       };
     case VM_MESSAGE_UPDATE_SUCCESS:
       return {
@@ -50,12 +54,14 @@ export default (state = vmMessagesDefaultState, action) => {
             : message
         ),
         isProcessing: false,
+        isFetching: false,
       };
     case VM_MESSAGE_UPDATE_ERROR:
       return {
         ...state,
         error: true,
         isProcessing: false,
+        isFetching: false,
       };
     default:
       return state;
