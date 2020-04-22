@@ -12,8 +12,8 @@ To be able to run this project you will have to set all your environment variabl
 
 - REACT_APP_SERVER_URL: Your Server URL
 - REACT_APP_CREDENTIALS: Your API Token for Authorization
-- ACCOUNT_ID
-- VM_BOX_ID
+- REACT_APP_ACCOUNT_ID
+- REACT_APP_VM_BOX_ID
 
 ## Available Scripts
 
