@@ -179,6 +179,13 @@ const VMMessages = (props) => {
     );
   };
 
+  // To fix out of range issue on Table
+  useEffect(() => {
+    if (vmMessages.length <= rowsPerPage && page > 0) {
+      setPage(0);
+    }
+  }, [vmMessages.length, rowsPerPage, page]);
+
   return (
     <div>
       {isProcessing && (
@@ -285,7 +292,7 @@ const VMMessages = (props) => {
                 colSpan={3}
                 count={vmMessages.length}
                 rowsPerPage={rowsPerPage}
-                page={page}
+                page={page > 0 && vmMessages.length === rowsPerPage ? 0 : page}
                 SelectProps={{
                   inputProps: { "aria-label": "rows per page" },
                   native: true,
