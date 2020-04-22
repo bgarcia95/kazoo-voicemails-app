@@ -229,6 +229,11 @@ const VMMessages = (props) => {
                     )
                   : vmMessages
                 ).map((message) => {
+                  const to = message.to.includes("+")
+                    ? parsePhoneNumberFromString(
+                        message.to.split("@")[0]
+                      ).formatInternational()
+                    : message.to;
                   const from = message.from.includes("anonymous")
                     ? "Anonymous"
                     : message["caller_id_name"].includes("+")
@@ -236,13 +241,6 @@ const VMMessages = (props) => {
                         message["caller_id_name"].split("@")[0]
                       ).formatInternational()
                     : message["caller_id_name"];
-                  const to = message.from.includes("anonymous")
-                    ? "Anonymous"
-                    : message["caller_id_name"].includes("+")
-                    ? parsePhoneNumberFromString(
-                        message["caller_id_name"].split("@")[0]
-                      ).formatInternational()
-                    : message.to;
                   const duration = humanizeDuration(message.length, {
                     units: ["h", "m", "s"],
                     round: true,

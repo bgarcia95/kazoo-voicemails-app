@@ -7,10 +7,7 @@ import {
   VM_MESSAGE_UPDATE_SUCCESS,
   VM_MESSAGE_UPDATE_ERROR,
 } from "../../utils/actions";
-import {
-  REACT_APP_ACCOUNT_ID,
-  REACT_APP_VM_BOX_ID,
-} from "../../../utils/constants";
+import { REACT_APP_ACCOUNT_ID } from "../../../utils/constants";
 
 // GET METHODS
 
