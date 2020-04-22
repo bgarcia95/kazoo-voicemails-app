@@ -204,7 +204,7 @@ const VMMessages = (props) => {
                 <TableCell
                   colSpan={4}
                   rowSpan={vmMessages.length}
-                  style={{ textAlign: "center" }}
+                  className="text-center"
                 >
                   <CircularProgress />
                 </TableCell>
@@ -213,11 +213,7 @@ const VMMessages = (props) => {
               <React.Fragment>
                 {Object.keys(vmMessages).length === 0 && (
                   <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      rowSpan={5}
-                      style={{ textAlign: "center" }}
-                    >
+                    <TableCell colSpan={5} rowSpan={5} className="text-center">
                       No data available
                     </TableCell>
                   </TableRow>
@@ -260,7 +256,7 @@ const VMMessages = (props) => {
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
                             value={message.folder}
-                            style={{ textAlign: "center" }}
+                            className="text-center"
                             onChange={(e) => {
                               handleChange(e);
                               onChange(message["media_id"], e.target.value);
@@ -277,7 +273,7 @@ const VMMessages = (props) => {
             )}
 
             {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
+              <TableRow style={{ height: 30 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
             )}

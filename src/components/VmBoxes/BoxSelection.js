@@ -54,15 +54,8 @@ const BoxSelection = () => {
   return (
     <div>
       <Grid item xs={12}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography>Pick a Box</Typography>
+        <div className="row--select">
+          <Typography>Voicemail Box</Typography>
 
           <FormControl variant="outlined" className={classes.formControl}>
             <Select
@@ -70,7 +63,7 @@ const BoxSelection = () => {
               id="demo-simple-select-outlined"
               value={boxID}
               onChange={handleChange}
-              style={{ textAlign: "center" }}
+              className="text-center"
             >
               {populateSelect()}
             </Select>
