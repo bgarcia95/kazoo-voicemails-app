@@ -4,10 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Environment Variables
 
-You can set your environment variables in a `.env` file for local development
+You can set your environment variables in an `.env` file for local development
 
 - REACT_APP_SERVER_URL: Your Server URL
-- REACT_APP_CREDENTIALS: Your API Token for Authentication
+- REACT_APP_CREDENTIALS: Your API Token for Authorization
 - ACCOUNT_ID
 - VM_BOX_ID
 
