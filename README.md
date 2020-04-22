@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Check it out! 🤓
 
-- URL: <a href="https://voicemails-app.netlify.app/" target="_blank">https://voicemails-app.netlify.app/</a>
+- URL: [https://voicemails-app.netlify.app/](https://voicemails-app.netlify.app/)
 
 ### Environment Variables
 
