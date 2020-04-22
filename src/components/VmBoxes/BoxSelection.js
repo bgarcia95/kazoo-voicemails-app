@@ -86,8 +86,9 @@ const BoxSelection = () => {
             Fetch
           </Button>
         </div>
-        <VMMessages boxID={boxID} />
       </Grid>
+      {/* Table with VM messages */}
+      <VMMessages boxID={boxID} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Paper, Container } from "@material-ui/core";
 // Redux
 import { Provider } from "react-redux";
 import configureStore from "./redux/store/configureStore";
-import BoxSelection from "./components/VmBoxes/BoxSelection";
+import Voicemail from "./components";
 
 const store = configureStore();
 
@@ -14,7 +14,7 @@ function App() {
       <Header />
       <Container>
         <Paper>
-          <BoxSelection />
+          <Voicemail />
         </Paper>
       </Container>
     </Provider>
