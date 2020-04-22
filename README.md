@@ -2,9 +2,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Kazoo Voicemails App
 
+### Check it out! 🤓
+
+URL: [https://kazoo-voicemails-app.netlify.app/]
+
 ### Environment Variables
 
-You can set your environment variables in an `.env` file for local development
+To be able to run this project you will have to set all your environment variables in an `.env` file for local development. The variables you need to set are the following:
 
 - REACT_APP_SERVER_URL: Your Server URL
 - REACT_APP_CREDENTIALS: Your API Token for Authorization
