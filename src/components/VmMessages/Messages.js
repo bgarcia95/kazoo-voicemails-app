@@ -152,6 +152,7 @@ const VMMessages = () => {
   const vmMessages = useSelector((state) => state.vmMessages.messages);
   const isLoading = useSelector((state) => state.vmMessages.isLoading);
   const isProcessing = useSelector((state) => state.vmMessages.isProcessing);
+  const isFetching = useSelector((state) => state.vmMessages.isFetching);
 
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, vmMessages.length - page * rowsPerPage);
@@ -196,7 +197,7 @@ const VMMessages = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading && (
+            {(isLoading || isFetching) && (
               <TableRow>
                 <TableCell
                   colSpan={5}
@@ -207,6 +208,7 @@ const VMMessages = () => {
                 </TableCell>
               </TableRow>
             )}
+
             {(rowsPerPage > 0
               ? vmMessages.slice(
                   page * rowsPerPage,
