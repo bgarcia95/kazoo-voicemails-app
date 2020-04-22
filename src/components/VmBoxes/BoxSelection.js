@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getVmBoxesAction } from "../../redux/actions/vmBoxes/vmBoxes";
 import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
+import VMMessages from "../VmMessages/Messages";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -51,40 +52,43 @@ const BoxSelection = () => {
     setBoxID(e.target.value);
   };
   return (
-    <Grid item xs={12}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography>Pick a Box</Typography>
-
-        <FormControl variant="outlined" className={classes.formControl}>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value={boxID}
-            onChange={handleChange}
-            style={{ textAlign: "center" }}
-          >
-            {populateSelect()}
-          </Select>
-        </FormControl>
-        <Button
-          variant={"contained"}
-          color={"primary"}
-          onClick={() => {
-            dispatch(getVmMessagesAction(boxID));
+    <div>
+      <Grid item xs={12}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          disabled={!boxID}
         >
-          Fetch
-        </Button>
-      </div>
-    </Grid>
+          <Typography>Pick a Box</Typography>
+
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              labelId="demo-simple-select-outlined-label"
+              id="demo-simple-select-outlined"
+              value={boxID}
+              onChange={handleChange}
+              style={{ textAlign: "center" }}
+            >
+              {populateSelect()}
+            </Select>
+          </FormControl>
+          <Button
+            variant={"contained"}
+            color={"primary"}
+            onClick={() => {
+              dispatch(getVmMessagesAction(boxID));
+            }}
+            disabled={!boxID}
+          >
+            Fetch
+          </Button>
+        </div>
+        <VMMessages boxID={boxID} />
+      </Grid>
+    </div>
   );
 };
 

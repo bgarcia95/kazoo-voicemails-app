@@ -137,7 +137,7 @@ const folderStates = () =>
   ));
 
 // Table Component
-const VMMessages = () => {
+const VMMessages = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -153,7 +153,7 @@ const VMMessages = () => {
   const isLoading = useSelector((state) => state.vmMessages.isLoading);
   const isProcessing = useSelector((state) => state.vmMessages.isProcessing);
   const isFetching = useSelector((state) => state.vmMessages.isFetching);
-
+  const { boxID } = props;
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, vmMessages.length - page * rowsPerPage);
 
@@ -174,7 +174,9 @@ const VMMessages = () => {
   };
 
   const onChange = (messageID, messageFolder) => {
-    dispatch(updateVmMessageAction(messageID, { folder: messageFolder }));
+    dispatch(
+      updateVmMessageAction(boxID, messageID, { folder: messageFolder })
+    );
   };
 
   return (
@@ -197,70 +199,84 @@ const VMMessages = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {(isLoading || isFetching) && (
+            {isLoading || isFetching ? (
               <TableRow>
                 <TableCell
-                  colSpan={5}
+                  colSpan={4}
                   rowSpan={vmMessages.length}
                   style={{ textAlign: "center" }}
                 >
                   <CircularProgress />
                 </TableCell>
               </TableRow>
+            ) : (
+              <React.Fragment>
+                {Object.keys(vmMessages).length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={5}
+                      rowSpan={5}
+                      style={{ textAlign: "center" }}
+                    >
+                      No data available
+                    </TableCell>
+                  </TableRow>
+                )}
+                {(rowsPerPage > 0
+                  ? vmMessages.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                  : vmMessages
+                ).map((message) => {
+                  const from = message.from.includes("anonymous")
+                    ? "Anonymous"
+                    : message["caller_id_name"].includes("+")
+                    ? parsePhoneNumberFromString(
+                        message["caller_id_name"].split("@")[0]
+                      ).formatInternational()
+                    : message["caller_id_name"];
+                  const to = message.from.includes("anonymous")
+                    ? "Anonymous"
+                    : message["caller_id_name"].includes("+")
+                    ? parsePhoneNumberFromString(
+                        message["caller_id_name"].split("@")[0]
+                      ).formatInternational()
+                    : message.to;
+                  const duration = humanizeDuration(message.length, {
+                    units: ["h", "m", "s"],
+                    round: true,
+                  });
+
+                  return (
+                    <TableRow key={message["media_id"]}>
+                      <TableCell component="th" scope="row">
+                        {from}
+                      </TableCell>
+                      <TableCell align="right">{to}</TableCell>
+                      <TableCell align="right">{duration}</TableCell>
+                      <TableCell align="right">
+                        <FormControl className={classes.formControl}>
+                          <Select
+                            variant="outlined"
+                            labelId="demo-simple-select-outlined-label"
+                            id="demo-simple-select-outlined"
+                            value={message.folder}
+                            style={{ textAlign: "center" }}
+                            onChange={(e) => {
+                              handleChange(e);
+                              onChange(message["media_id"], e.target.value);
+                            }}
+                          >
+                            {folderStates()}
+                          </Select>
+                        </FormControl>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </React.Fragment>
             )}
-
-            {(rowsPerPage > 0
-              ? vmMessages.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : vmMessages
-            ).map((message) => {
-              const from = message.from.includes("anonymous")
-                ? "Anonymous"
-                : message["caller_id_name"].includes("+")
-                ? parsePhoneNumberFromString(
-                    message["caller_id_name"].split("@")[0]
-                  ).formatInternational()
-                : message["caller_id_name"];
-              const to = message.to.includes("+")
-                ? parsePhoneNumberFromString(
-                    message.to.split("@")[0]
-                  ).formatInternational()
-                : message["caller_id_number"].includes("anonymous") &&
-                  "Anonymous";
-              const duration = humanizeDuration(message.length, {
-                units: ["h", "m", "s"],
-                round: true,
-              });
-
-              return (
-                <TableRow key={message["media_id"]}>
-                  <TableCell component="th" scope="row">
-                    {from}
-                  </TableCell>
-                  <TableCell align="right">{to}</TableCell>
-                  <TableCell align="right">{duration}</TableCell>
-                  <TableCell align="right">
-                    <FormControl className={classes.formControl}>
-                      <Select
-                        variant="outlined"
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={message.folder}
-                        style={{ textAlign: "center" }}
-                        onChange={(e) => {
-                          handleChange(e);
-                          onChange(message["media_id"], e.target.value);
-                        }}
-                      >
-                        {folderStates()}
-                      </Select>
-                    </FormControl>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
 
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>

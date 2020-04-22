@@ -59,18 +59,18 @@ export const vmMessageUpdateError = () => ({
   type: VM_MESSAGE_UPDATE_ERROR,
 });
 
-export const updateVmMessageAction = (messageID, vmMessageFolder) => {
+export const updateVmMessageAction = (boxID, messageID, vmMessageFolder) => {
   return (dispatch) => {
     dispatch(startVmMessageUpdate());
 
     axiosClient
       .post(
-        `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${REACT_APP_VM_BOX_ID}/messages/${messageID}`,
+        `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${boxID}/messages/${messageID}`,
         { data: vmMessageFolder }
       )
       .then((response) => {
         dispatch(vmMessageUpdateSuccess(response.data.data));
-        dispatch(getVmMessagesAction());
+        // dispatch(getVmMessagesAction());
       })
       .catch((error) => {
         console.log(error);
