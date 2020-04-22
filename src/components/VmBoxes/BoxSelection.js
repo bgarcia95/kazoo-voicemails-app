@@ -76,7 +76,7 @@ const BoxSelection = () => {
             }}
             disabled={!boxID}
           >
-            Fetch
+            Search
           </Button>
         </div>
       </Grid>
