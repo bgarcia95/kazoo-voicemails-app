@@ -1,7 +1,6 @@
 import axios from "axios";
 import {
   REACT_APP_SERVER_URL,
-  REACT_APP_PROXY_URL,
   REACT_APP_CREDENTIALS,
 } from "./../utils/constants";
 
@@ -10,8 +9,10 @@ const headers = {
   Authorization: `Basic ${REACT_APP_CREDENTIALS}`,
 };
 
+const PROXY_URL = "https://cors-anywhere.herokuapp.com/";
+
 const axiosClient = axios.create({
-  baseURL: `${REACT_APP_PROXY_URL}${REACT_APP_SERVER_URL}`,
+  baseURL: `${PROXY_URL}${REACT_APP_SERVER_URL}`,
   headers,
 });
 

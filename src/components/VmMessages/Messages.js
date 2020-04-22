@@ -121,7 +121,7 @@ const useStyles2 = makeStyles((theme) => ({
   },
 }));
 
-//  Folder types for select
+//  Folder types for Select
 
 const folderTypes = [
   { value: "new", label: "New" },

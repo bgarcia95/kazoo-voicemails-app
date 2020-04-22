@@ -3,5 +3,4 @@ export const {
   REACT_APP_CREDENTIALS,
   REACT_APP_ACCOUNT_ID,
   REACT_APP_VM_BOX_ID,
-  REACT_APP_PROXY_URL,
 } = process.env;

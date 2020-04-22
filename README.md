@@ -1,5 +1,16 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Kazoo Voicemails App
+
+### Environment Variables
+
+You can set your environment variables in a `.env` file for local development
+
+- REACT_APP_SERVER_URL: Your Server URL
+- REACT_APP_CREDENTIALS: Your API Token for Authentication
+- ACCOUNT_ID
+- VM_BOX_ID
+
 ## Available Scripts
 
 In the project directory, you can run:
