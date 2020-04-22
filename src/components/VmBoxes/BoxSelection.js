@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   FormControl,
@@ -18,13 +18,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Main Component
 const BoxSelection = () => {
   const dispatch = useDispatch();
+  const classes = useStyles();
 
   useEffect(() => {
     const getVmBoxes = () => dispatch(getVmBoxesAction());
     getVmBoxes();
   }, [dispatch]);
+
+  const [boxID, setBoxID] = useState("");
 
   const vmBoxes = useSelector((state) => state.vmBoxes.boxes);
 
@@ -36,9 +40,15 @@ const BoxSelection = () => {
   });
 
   const populateSelect = () =>
-    vmBoxesArray.map((box) => <MenuItem key={box.id}>{box.name}</MenuItem>);
+    vmBoxesArray.map((box) => (
+      <MenuItem key={box.id} value={box.id}>
+        {box.name}
+      </MenuItem>
+    ));
 
-  const classes = useStyles();
+  const handleChange = (e) => {
+    setBoxID(e.target.value);
+  };
   return (
     <Grid item xs={12}>
       <div
@@ -55,12 +65,11 @@ const BoxSelection = () => {
           <Select
             labelId="demo-simple-select-outlined-label"
             id="demo-simple-select-outlined"
-            // value={box}
-            // onChange={handleChangeBox}
+            value={boxID}
+            onChange={handleChange}
             style={{ textAlign: "center" }}
           >
             {populateSelect()}
-            <MenuItem>Test</MenuItem>
           </Select>
         </FormControl>
         <Button
