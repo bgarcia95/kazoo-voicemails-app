@@ -27,21 +27,19 @@ export const getVmMessagesError = () => ({
   type: GET_VM_MESSAGES_ERROR,
 });
 
-export const getVmMessagesAction = () => {
+export const getVmMessagesAction = (boxID) => {
   return (dispatch) => {
     dispatch(getVmMessagesStart());
 
     // Fetch data from API
     axiosClient
-      .get(
-        `/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${REACT_APP_VM_BOX_ID}/messages`
-      )
+      .get(`/accounts/${REACT_APP_ACCOUNT_ID}/vmboxes/${boxID}/messages`)
       .then((response) => {
         // console.log(response.data);
         dispatch(getVmMessagesSuccess(response.data.data));
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         dispatch(getVmMessagesError());
       });
   };
