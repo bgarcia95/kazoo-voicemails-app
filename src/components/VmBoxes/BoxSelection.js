@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getVmBoxesAction } from "../../redux/actions/vmBoxes/vmBoxes";
+import { getVmMessagesAction } from "../../redux/actions/vmMessages/vmMessages";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -75,10 +76,10 @@ const BoxSelection = () => {
         <Button
           variant={"contained"}
           color={"primary"}
-          //   onClick={() => {
-          //     dispatch(getVmRecordsAction(box));
-          //   }}
-          //   disabled={!box}
+          onClick={() => {
+            dispatch(getVmMessagesAction(boxID));
+          }}
+          disabled={!boxID}
         >
           Fetch
         </Button>
